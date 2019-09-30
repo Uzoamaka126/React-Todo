@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Todo from './components/TodoComponents/Todo';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
+import './Todo.css'
 
 
 class App extends React.Component {
@@ -14,50 +15,53 @@ class App extends React.Component {
     super(props);
     this.state = {
       todos: [
-        {id: 1, task: 'Organize Garage', completed: false },
-        {id: 2, task: 'Write Code', completed: false },
-        {id: 3, task: 'Write Article', completed: false }
+        // {id: 1, task: 'Organize Garage', completed: false },
+        // {id: 2, task: 'Write Code', completed: false },
+        // {id: 3, task: 'Write Article', completed: false }
       ],
-      todoInput: ""
+      
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
 
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const todoInsert = {
-      id:  Date.now(),
-      task: this.state.todoInput,
-      completed: false
-    }
-    const newTodoList = this.state.todos.concat(todoInsert);
+  updateList = (task) => 
+  {
     this.setState({
-    // this.updateList(this.state.todos);
-    // this.form.reset();
-    todos: newTodoList
+      todos: [...this.state.todos, task]
     })
   }
-  handleChange = event => {
-      this.setState({ todoInput: event.target.value });
+  deleteTask = (id) => {
+    let currentTodo = this.state.todos;
+    currentTodo.map(item => {
+      if (item.id === id) {
+        currentTodo.splice(currentTodo.indexOf(item), 1);
+      }
+    })
+    this.setState({
+      todos: currentTodo
+    })
   }
-  handleTaskRemoval(event) {
-    
+
+  toggleCompletedTask = (id) => {
+    this.setState({
+      todos: this.state.todos.map(item => {
+        if (item.id === id) {
+          item.isCompleted = !item.isCompleted;
+          return item;
+        }
+      })
+    })
   }
-  // completedTasks(value) {
-  //   let prevState = this.state.todos;
-  //   let index = this.state.todos.indexOf(id);
-  //   let completed = prevState.splice(index, 1);
-  // }
 
   render() {
     return (
       <div>
         Create A New Todo Task
-        <TodoForm handleSubmit={this.handleSubmit}  handleChange={this.handleChange}  todoInput={this.state.todoInput}/>
+        <TodoForm updateList={this.updateList} handleSubmit={this.handleSubmit}  handleChange={this.handleChange} todoInput={this.state.todoInput} />
         My Todo List:
-        <TodoList todos={this.state.todos}  />
+        <TodoList todos={this.state.todos} deleteTask={this.deleteTask} toggleCompletedTask={this.toggleCompletedTask} />
         {/* Completed Tasks: */}
         {/* <Todo */}
       </div>

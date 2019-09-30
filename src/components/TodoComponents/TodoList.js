@@ -1,7 +1,7 @@
 // your components will all go in this `component` directory.
 // feel free to change this component.js into TodoList.js
 import React, { Component } from 'react';
-import TodoForm from './TodoForm';
+import Todo from './Todo';
 
  export default class TodoList  extends Component {
      randomIdNumber = () => {
@@ -14,11 +14,18 @@ import TodoForm from './TodoForm';
                 <ul>
                     {this.props.todos.map(item => {
                         return (
-                            <li key={item.id + this.randomIdNumber()} id={item.id}>
-                                <p>{item.task}</p>
-                                <span>{item.completed}</span>
-                                <button onClick={() => this.props.completed(item)}>Completed</button>
-                            </li>
+                            <Todo 
+                                key={item.id}
+                                task={item}
+                                toggleCompletedTask={this.props.toggleCompletedTask}
+                                deleteTask={this.props.deleteTask}
+                            />
+                            // <li key={item.id + this.randomIdNumber()} id={item.id}>
+                            //     <p>{item.task}</p>
+                            //     <span>{item.completed}</span>
+                            //     <button onClick={() => this.props.handleTaskRemoval(item)}>Completed</button>
+                            //     <button onClick={() => this.props.handleTaskRemoval(item)}>Completed</button>
+                            // </li>
                         )
                     })}
                 </ul>
